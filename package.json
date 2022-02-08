@@ -1,0 +1,39 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "[![Actions Status](https://github.com/TimurDavlet/frontend-project-lvl3/workflows/hexlet-check/badge.svg)](https://github.com/TimurDavlet/frontend-project-lvl3/actions)",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx -n --experimental-vm-modules jest",
+    "build": "cross-env NODE_ENV=production webpack --mode production",
+    "dev": "cross-env NODE_ENV=development webpack --mode development",
+    "watch": "webpack --watch",
+    "serve": "webpack serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TimurDavlet/frontend-project-lvl3.git"
+  },
+  "author": "TimurDavlet",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TimurDavlet/frontend-project-lvl3/issues"
+  },
+  "homepage": "https://github.com/TimurDavlet/frontend-project-lvl3#readme",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "eslint": "^8.8.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^26.1.0",
+    "html-webpack-plugin": "^5.5.0",
+    "lodash": "^4.17.21",
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4",
+    "workbox-webpack-plugin": "^6.4.2"
+  },
+  "dependencies": {
+    "jest": "^27.5.0"
+  }
+}
