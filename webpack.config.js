@@ -16,11 +16,11 @@ module.exports = {
   entry: './js/main.js',
   output: {
     filename: `./js/${filename('js')}`,
-    path: path.resolve(__dirname, 'app'),
+    path: path.resolve(__dirname, 'public'),
   },
   devServer: {
     historyApiFallback: true,
-    static: path.resolve(__dirname, 'app'),
+    static: path.resolve(__dirname, 'public'),
     open: true,
     compress: true,
     hot: true,
