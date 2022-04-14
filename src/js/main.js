@@ -1,5 +1,7 @@
 /* eslint-disable no-undef */
-import { generateRss, createModal, linksEvent, updatePost, findNewPosts } from './rss-generator.js';
+import {
+  generateRss, createModal, linksEvent, updatePost, findNewPosts,
+} from './rss-generator.js';
 
 const form = document.querySelector('[class="rss-form text-body"]');
 form.addEventListener('submit', (e) => {
