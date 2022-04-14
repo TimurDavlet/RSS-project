@@ -1,50 +1,28 @@
-export default (domObj) => {
-  const data = {
-    feed: {
-      name: '',
-      description: '',
-      link: '',
-    },
-    posts: [],
-  };
-  const channel = domObj.querySelector('channel');
-  const channelChild = Array.from(channel.children);
-  channelChild.forEach((element) => {
-    switch (element.localName) {
-      case 'title':
-        data.feed.name = element.innerHTML ?? '';
-        break;
-      case 'description':
-        data.feed.description = element.innerHTML ?? '';
-        break;
-      case 'link':
-        data.feed.link = element.innerHTML ?? '';
-        break;
+/* eslint-disable no-undef */
+const getNode = (xml) => xml.querySelector('channel');
+const getNodeParam = (node) => {
+  const title = node.querySelector('title').textContent;
+  const description = node.querySelector('description').textContent;
+  const link = node.querySelector('link').textContent;
+  return { title, description, link };
+};
+const getItems = (node) => {
+  const items = node.querySelectorAll('item');
+  return Array.from(items).map((item) => getNodeParam(item));
+};
 
-      default:
-        break;
-    }
-  });
-  channelChild.filter((element) => element.localName === 'item').forEach((item) => {
-    const itemChild = Array.from(item.children);
-    const postObj = {};
-    itemChild.forEach((element) => {
-      switch (element.localName) {
-        case 'title':
-          postObj.name = element.innerHTML ?? '';
-          break;
-        case 'description':
-          postObj.description = element.innerHTML ?? '';
-          break;
-        case 'link':
-          postObj.link = element.innerHTML ?? '';
-          break;
+export const parser = (DOMxml) => {
+  const node = getNode(DOMxml);
+  const feedValue = getNodeParam(node);
+  const postsValue = getItems(node);
+  return { feed: feedValue, posts: postsValue };
+};
 
-        default:
-          break;
-      }
-    });
-    data.posts.push(postObj);
-  });
-  return data;
+export const DOMparser = (data, massage) => {
+  const pars = new DOMParser();
+  const domObject = pars.parseFromString(data.contents, 'application/xml');
+  if (domObject.querySelector('parsererror') !== null) {
+    throw new Error(massage);
+  }
+  return domObject;
 };
