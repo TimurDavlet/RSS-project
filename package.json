@@ -20,7 +20,6 @@
   "bugs": {
     "url": "https://github.com/TimurDavlet/frontend-project-lvl3/issues"
   },
-  "type": "module",
   "homepage": "https://github.com/TimurDavlet/frontend-project-lvl3#readme",
   "devDependencies": {
     "@babel/core": "^7.17.2",
