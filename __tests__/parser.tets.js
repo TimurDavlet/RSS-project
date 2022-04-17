@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import { readFileSync } from 'fs';
 import { parser } from '../src/js/parser';
