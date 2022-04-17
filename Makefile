@@ -25,3 +25,6 @@ lint:
 
 uninstall:
 	npm rm --global @hexlet/code
+
+test:
+	npx -n --experimental-vm-modules jest
