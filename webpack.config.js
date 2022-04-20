@@ -1,60 +1,47 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import pkg from 'webpack';
 
-const isDev = process.env.NODE_ENV === 'development';
-const isProd = !isDev;
+const { SourceMapDevToolPlugin } = pkg;
 
-const filename = (ext) => (isDev ? `[name].${ext}` : `[name].[contenthash].${ext}`);
-
-module.exports = {
-  context: path.resolve(__dirname, 'src'),
-  mode: 'development',
-  entry: './index.js',
-  output: {
-    filename: `./${filename('js')}`,
-    path: path.resolve(__dirname, 'public'),
-  },
+export default {
+  mode: process.env.NODE_ENV || 'development',
+  entry: './src/index.js',
   devServer: {
     historyApiFallback: true,
-    static: path.resolve(__dirname, 'public'),
+    static: {
+      directory: path.join(path.resolve(), 'dist'),
+    },
     open: true,
     compress: true,
     hot: true,
-    port: 3000,
+    port: 8080,
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './index.html'),
-      filename: 'index.html',
-      minify: {
-        collapseWhitespace: isProd,
-      },
-    }),
-    new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin({
-      filename: `./css/${filename('css')}`,
-    }),
-  ],
-  devtool: isProd ? false : 'source-map',
   module: {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
-        use: ['babel-loader'],
+        enforce: 'pre',
+        use: ['source-map-loader'],
       },
       {
         test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
       {
-        test: /\.s[ac]ss$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader', 'postcss-loader'],
       },
     ],
   },
+  plugins: [
+    new SourceMapDevToolPlugin({
+      filename: '[file].map',
+    }),
+    new HtmlWebpackPlugin({
+      template: './index.html',
+    }),
+  ],
 };

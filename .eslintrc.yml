@@ -1,6 +1,14 @@
+root: true
+
+plugins:
+  - jest
+  - babel
+
 env:
   node: true
   es2020: true
+  jest: true
+  browser: true
 
 extends:
   - 'airbnb-base'

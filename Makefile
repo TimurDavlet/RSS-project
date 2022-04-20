@@ -1,11 +1,8 @@
-start-server:
-	npm run start
+develop:
+	npx webpack serve
 
 build:
 	npm run build
-
-build-dev:
-	npm run dev
 
 install:
 	npm ci
@@ -19,4 +16,3 @@ lint:
 
 uninstall:
 	npm rm --global @hexlet/code
-	
