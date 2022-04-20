@@ -1,5 +1,6 @@
 /node_modules/
 *.log
 dist
+public
 coverage
 node_modules

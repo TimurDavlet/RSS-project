@@ -12,7 +12,7 @@ export default {
   devServer: {
     historyApiFallback: true,
     static: {
-      directory: path.join(path.resolve(), 'public'),
+      directory: path.join(path.resolve(), 'dist'),
     },
     open: true,
     compress: true,
