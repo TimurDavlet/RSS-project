@@ -8,15 +8,19 @@ const getItem = (element) => ({
 });
 
 export default (data, feedback, i18n) => {
-  const domParser = new DOMParser();
-  const xmlDocument = domParser.parseFromString(data, 'application/xml');
-  if (xmlDocument.querySelector('parsererror')) {
+  try {
+    const domParser = new DOMParser();
+    const xmlDocument = domParser.parseFromString(data, 'application/xml');
+    if (xmlDocument.querySelector('parsererror')) {
+      throw new Error(i18n.t('errors.invalidRSS'));
+    }
+    return {
+      feedTitle: xmlDocument.querySelector('title')?.textContent,
+      feedDescription: xmlDocument.querySelector('description')?.textContent,
+      feedItems: [...xmlDocument.querySelectorAll('item')].map(getItem),
+    };
+  } catch (e) {
     feedback.error = i18n.t('errors.invalidRSS');
-    throw new Error(i18n.t('errors.invalidRSS'));
+    return i18n.t('errors.invalidRSS');
   }
-  return {
-    feedTitle: xmlDocument.querySelector('title')?.textContent,
-    feedDescription: xmlDocument.querySelector('description')?.textContent,
-    feedItems: [...xmlDocument.querySelectorAll('item')].map(getItem),
-  };
 };
