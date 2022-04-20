@@ -57,6 +57,7 @@ const runValidation = async (state, i18n, link) => {
 };
 
 const view = (elements, state, i18n) => {
+  console.log(elements.form)
   elements.form.addEventListener('submit', async (e) => {
     e.preventDefault();
     await runValidation(state, i18n, elements.input.value);
