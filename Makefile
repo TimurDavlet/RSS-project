@@ -1,4 +1,5 @@
 develop:
+	npm run build
 	npx webpack serve
 
 build:
