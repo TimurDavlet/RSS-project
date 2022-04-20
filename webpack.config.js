@@ -13,9 +13,9 @@ const filename = (ext) => (isDev ? `[name].${ext}` : `[name].[contenthash].${ext
 module.exports = {
   context: path.resolve(__dirname, 'src'),
   mode: 'development',
-  entry: './js/index.js',
+  entry: './index.js',
   output: {
-    filename: `./js/${filename('js')}`,
+    filename: `./${filename('js')}`,
     path: path.resolve(__dirname, 'public'),
   },
   devServer: {
