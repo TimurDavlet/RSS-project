@@ -19,10 +19,12 @@ const getNewPost = async (state, i18n) => {
   state.links.forEach(async (link) => {
     const response = await makeRequest(state, i18n, link);
     const newFeed = parser(response.contents, state.feedback, i18n);
-    const newPosts = _.differenceBy(newFeed.feedItems, state.posts, 'postLink');
-    if (newPosts.length > 0) {
-      state.newPosts = [...newPosts];
-      state.posts = [...state.newPosts, ...state.posts];
+    if (newFeed !== null) {
+      const newPosts = _.differenceBy(newFeed.feedItems, state.posts, 'postLink');
+      if (newPosts.length > 0) {
+        state.newPosts = [...newPosts];
+        state.posts = [...state.newPosts, ...state.posts];
+      }
     }
   });
   setTimeout(() => getNewPost(state, i18n), 5000);
@@ -31,8 +33,10 @@ const getNewPost = async (state, i18n) => {
 const getFeeds = async (state, i18n, link) => {
   const response = await makeRequest(state, i18n, link);
   const newFeed = parser(response.contents, state.feedback, i18n);
-  state.newFeed = [newFeed];
-  state.feeds = [...state.newFeed, ...state.feeds];
+  if (newFeed !== null) {
+    state.newFeed = [newFeed];
+    state.feeds = [...state.newFeed, ...state.feeds];
+  }
 };
 
 const runValidation = async (state, i18n, link) => {
@@ -43,9 +47,9 @@ const runValidation = async (state, i18n, link) => {
   }
   state.input.readonly = true;
   await getFeeds(state, i18n, link);
-  state.links.push(link);
   await getNewPost(state, i18n);
   if (state.feedback.error === null) {
+    state.links.push(link);
     state.feedback.success = null;
     state.feedback.success = i18n.t('success');
   }

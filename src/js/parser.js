@@ -21,6 +21,6 @@ export default (data, feedback, i18n) => {
     };
   } catch (e) {
     feedback.error = i18n.t('errors.invalidRSS');
-    return i18n.t('errors.invalidRSS');
+    return null;
   }
 };
