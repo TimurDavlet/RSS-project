@@ -1,28 +1,21 @@
 /* eslint-disable no-undef */
-const getNode = (xml) => xml.querySelector('channel');
-const getNodeParam = (node) => {
-  const title = node.querySelector('title').textContent;
-  const description = node.querySelector('description').textContent;
-  const link = node.querySelector('link').textContent;
-  return { title, description, link };
-};
-const getItems = (node) => {
-  const items = node.querySelectorAll('item');
-  return Array.from(items).map((item) => getNodeParam(item));
-};
+/* eslint-disable no-param-reassign */
+const getItem = (element) => ({
+  postTitle: element.querySelector('title')?.textContent,
+  postDescription: element.querySelector('description')?.textContent,
+  postLink: element.querySelector('link')?.textContent,
+  postId: element.querySelector('guid')?.textContent,
+});
 
-export const parser = (DOMxml) => {
-  const node = getNode(DOMxml);
-  const feedValue = getNodeParam(node);
-  const postsValue = getItems(node);
-  return { feed: feedValue, posts: postsValue };
-};
-
-export const DOMparser = (data, massage) => {
-  const pars = new DOMParser();
-  const domObject = pars.parseFromString(data.contents, 'application/xml');
-  if (domObject.querySelector('parsererror') !== null) {
-    throw new Error(massage);
+export default (data, feedback, i18n) => {
+  const domParser = new DOMParser();
+  const xmlDocument = domParser.parseFromString(data, 'application/xml');
+  if (xmlDocument.querySelector('parsererror')) {
+    feedback.error = i18n.t('errors.invalidRSS');
   }
-  return domObject;
+  return {
+    feedTitle: xmlDocument.querySelector('title')?.textContent,
+    feedDescription: xmlDocument.querySelector('description')?.textContent,
+    feedItems: [...xmlDocument.querySelectorAll('item')].map(getItem),
+  };
 };
