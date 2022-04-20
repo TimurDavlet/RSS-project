@@ -11,12 +11,6 @@ install:
 	npm ci
 	npm link
 
-test:
-	npx -n --experimental-vm-modules jest
-
-test-coverage:
-	npm test -- --coverage --coverageProvider=v8
-
 publish:
 	npm publish --dry-run
 
@@ -25,6 +19,4 @@ lint:
 
 uninstall:
 	npm rm --global @hexlet/code
-
-test:
-	npx -n --experimental-vm-modules jest
+	
