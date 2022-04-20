@@ -10,9 +10,8 @@ const makeRequest = async (state, i18n, link) => {
     const response = await axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`);
     return response.data;
   } catch (e) {
-    console.log(i18n.t('errors.network'))
     state.feedback.error = i18n.t('errors.network');
-    return i18n.t('errors.network');
+    throw new Error(i18n.t('errors.network'));
   }
 };
 
