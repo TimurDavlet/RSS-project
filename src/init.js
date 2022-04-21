@@ -35,7 +35,7 @@ export default () => {
   i18nextInstance.init({
     lng: state.lng,
     resources,
-  });
+  }).then(() => view(elements, state, i18nextInstance));
 
-  view(elements, state, i18nextInstance);
+  //view(elements, state, i18nextInstance);
 };
