@@ -2,8 +2,10 @@
 import i18next from 'i18next';
 import onChange from 'on-change';
 import resources from './locales/index.js';
-import render from './render.js';
 import view from './view.js';
+import {
+  renderError, renderSuccess, renderFeeds, renderPosts, blockInput,
+} from './render.js';
 
 export default () => {
   const i18nextInstance = i18next.createInstance();
@@ -18,6 +20,25 @@ export default () => {
       input: document.getElementById('url-input'),
       posts: document.querySelector('.posts'),
       submitButton: document.querySelector('button[type="submit"]'),
+    };
+
+    // eslint-disable-next-line no-shadow
+    const render = (elements) => (path, value) => {
+      if (path === 'feedback.error') {
+        renderError(elements, value);
+      }
+      if (path === 'feedback.success') {
+        renderSuccess(elements, value);
+      }
+      if (path === 'newFeed') {
+        renderFeeds(elements, value);
+      }
+      if (path === 'newPosts') {
+        renderPosts(elements, value.reverse());
+      }
+      if (path === 'input.readonly') {
+        blockInput(elements, value);
+      }
     };
 
     const state = onChange({

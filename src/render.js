@@ -7,7 +7,7 @@ const clear = (elements) => {
   elements.feedback.classList.remove('text-success');
 };
 
-const renderError = (elements, value) => {
+export const renderError = (elements, value) => {
   if (value === null) {
     return;
   }
@@ -17,7 +17,7 @@ const renderError = (elements, value) => {
   elements.feedback.classList.add('text-danger');
 };
 
-const renderSuccess = (elements, value) => {
+export const renderSuccess = (elements, value) => {
   if (value === null) {
     return;
   }
@@ -28,7 +28,7 @@ const renderSuccess = (elements, value) => {
   elements.input.focus();
 };
 
-const createTitle = (field, title) => {
+export const createTitle = (field, title) => {
   if (field.querySelector('.card')) {
     return;
   }
@@ -60,7 +60,7 @@ const changeLink = (link) => {
   link.classList.add('fw-normal', 'link-secondary');
 };
 
-const renderModal = (postTitle, postDescription, postLink, link) => {
+export const renderModal = (postTitle, postDescription, postLink, link) => {
   const modal = document.getElementById('modal');
   const body = document.querySelector('body');
   body.classList.add('modal-open');
@@ -91,7 +91,7 @@ const renderModal = (postTitle, postDescription, postLink, link) => {
   });
 };
 
-const renderPosts = (elements, posts) => {
+export const renderPosts = (elements, posts) => {
   const fieldPost = elements.posts;
   const ul = fieldPost.querySelector('.list-group');
   posts.forEach((post) => {
@@ -130,7 +130,7 @@ const renderPosts = (elements, posts) => {
   });
 };
 
-const renderFeeds = (elements, feeds) => {
+export const renderFeeds = (elements, feeds) => {
   const fieldFeed = elements.feeds;
   createTitle(fieldFeed, 'Фиды');
   createTitle(elements.posts, 'Посты');
@@ -151,30 +151,12 @@ const renderFeeds = (elements, feeds) => {
   });
 };
 
-const blockInput = (elements, value) => {
+export const blockInput = (elements, value) => {
   if (value === true) {
     elements.input.setAttribute('readonly', value);
     elements.submitButton.setAttribute('disabled', '');
   } else {
     elements.input.removeAttribute('readonly');
     elements.submitButton.removeAttribute('disabled');
-  }
-};
-
-export default (elements) => (path, value) => {
-  if (path === 'feedback.error') {
-    renderError(elements, value);
-  }
-  if (path === 'feedback.success') {
-    renderSuccess(elements, value);
-  }
-  if (path === 'newFeed') {
-    renderFeeds(elements, value);
-  }
-  if (path === 'newPosts') {
-    renderPosts(elements, value.reverse());
-  }
-  if (path === 'input.readonly') {
-    blockInput(elements, value);
   }
 };
