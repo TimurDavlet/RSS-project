@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* eslint-disable no-param-reassign */
 const clear = (elements) => {
   elements.input.classList.remove('is-invalid');
@@ -7,7 +6,7 @@ const clear = (elements) => {
   elements.feedback.classList.remove('text-success');
 };
 
-export const renderError = (elements, value) => {
+const renderError = (elements, value) => {
   if (value === null) {
     return;
   }
@@ -17,7 +16,7 @@ export const renderError = (elements, value) => {
   elements.feedback.classList.add('text-danger');
 };
 
-export const renderSuccess = (elements, value) => {
+const renderSuccess = (elements, value) => {
   if (value === null) {
     return;
   }
@@ -28,7 +27,7 @@ export const renderSuccess = (elements, value) => {
   elements.input.focus();
 };
 
-export const createTitle = (field, title) => {
+const createTitle = (field, title) => {
   if (field.querySelector('.card')) {
     return;
   }
@@ -60,7 +59,7 @@ const changeLink = (link) => {
   link.classList.add('fw-normal', 'link-secondary');
 };
 
-export const renderModal = (postTitle, postDescription, postLink, link) => {
+const renderModal = (postTitle, postDescription, postLink, link) => {
   const modal = document.getElementById('modal');
   const body = document.querySelector('body');
   body.classList.add('modal-open');
@@ -91,7 +90,7 @@ export const renderModal = (postTitle, postDescription, postLink, link) => {
   });
 };
 
-export const renderPosts = (elements, posts) => {
+const renderPosts = (elements, posts) => {
   const fieldPost = elements.posts;
   const ul = fieldPost.querySelector('.list-group');
   posts.forEach((post) => {
@@ -130,7 +129,7 @@ export const renderPosts = (elements, posts) => {
   });
 };
 
-export const renderFeeds = (elements, feeds) => {
+const renderFeeds = (elements, feeds) => {
   const fieldFeed = elements.feeds;
   createTitle(fieldFeed, 'Фиды');
   createTitle(elements.posts, 'Посты');
@@ -151,7 +150,7 @@ export const renderFeeds = (elements, feeds) => {
   });
 };
 
-export const blockInput = (elements, value) => {
+const blockInput = (elements, value) => {
   if (value === true) {
     elements.input.setAttribute('readonly', value);
     elements.submitButton.setAttribute('disabled', '');
@@ -160,3 +159,23 @@ export const blockInput = (elements, value) => {
     elements.submitButton.removeAttribute('disabled');
   }
 };
+
+const render = (elements) => (path, value) => {
+  if (path === 'feedback.error') {
+    renderError(elements, value);
+  }
+  if (path === 'feedback.success') {
+    renderSuccess(elements, value);
+  }
+  if (path === 'newFeed') {
+    renderFeeds(elements, value);
+  }
+  if (path === 'newPosts') {
+    renderPosts(elements, value.reverse());
+  }
+  if (path === 'input.readonly') {
+    blockInput(elements, value);
+  }
+};
+
+export default render;
