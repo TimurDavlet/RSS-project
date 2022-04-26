@@ -10,7 +10,6 @@ const makeRequest = (state, i18n, link) => {
       .then((response) => {
         return response.data;
       }).catch((e) => {
-      state.feedback.error = i18n.t('errors.network');
       throw new Error(i18n.t('errors.network'));
     })
 };
@@ -63,8 +62,7 @@ const runValidation = (state, i18n, link) => {
   .then(() => getFeeds(state, i18n, link))
   .then(() => getNewPost(state, i18n))
     .catch((err) => {
-      console.log(err)
-      state.feedback.error = err.errors[0];
+      state.feedback.error = err.message;
       state.feedback.success = null;
       state.input.readonly = false;
   });
