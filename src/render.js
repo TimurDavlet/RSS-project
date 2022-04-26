@@ -108,6 +108,7 @@ const renderPosts = (elements, posts) => {
     link.setAttribute('data-id', postId);
     link.setAttribute('target', '_blank');
     link.setAttribute('rel', 'noopener noreferrer');
+    link.setAttribute('aria-label', 'link')
     link.textContent = postTitle;
     li.appendChild(button);
     button.setAttribute('type', 'button');
