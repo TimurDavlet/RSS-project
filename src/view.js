@@ -29,7 +29,6 @@ const getNewPost = (state, i18n) => {
         }
       })
   });
-  console.log(state)
   setTimeout(() => getNewPost(state, i18n), 5000);
 };
 
@@ -50,8 +49,8 @@ const getFeeds = (state, i18n, link) => {
             state.newPosts = [...newPosts];
             state.posts = [...state.newPosts, ...state.posts];
           }
+          state.feedback.success = i18n.t('success');
       }
-      state.feedback.success = i18n.t('success');
       state.input.readonly = false;
     })
 };
