@@ -44,34 +44,29 @@ const getFeeds = (state, i18n, link) => {
       if (newFeed !== null) {
         state.newFeed = [newFeed];
         state.feeds = [...state.newFeed, ...state.feeds];
+        state.links.push(link);
+        const newPosts = _.differenceBy(newFeed.feedItems, state.posts, 'postLink');
+          if (newPosts.length > 0) {
+            state.newPosts = [...newPosts];
+            state.posts = [...state.newPosts, ...state.posts];
+          }
       }
+      state.feedback.success = i18n.t('success');
+      state.input.readonly = false;
     })
 };
 
 const runValidation = (state, i18n, link) => {
+  state.feedback.success = null;
+  state.feedback.error = null;
+  state.input.readonly = true;
   validate(link, state.links, i18n)
-  .then((data) => {
-    if (data !== null) {
-      state.feedback.error = data;
-      state.feedback.success = null;
-      throw new Error(data);
-    }
-    state.feedback.error = data;
-    state.input.readonly = true;
-  })
   .then(() => getFeeds(state, i18n, link))
-  .then(() => state.links.push(link))
-  .then(getNewPost(state, i18n))
-  .then(() => {
-    if (state.feedback.error === null) {
-      state.feedback.success = null;
-      state.feedback.success = i18n.t('success');
-    }
-    state.input.readonly = false;
-  })
+  .then(() => getNewPost(state, i18n))
     .catch((err) => {
-      console.log(err)
-    //state.feedback.error = err;
+      state.feedback.error = err.errors[0];
+      state.feedback.success = null;
+      state.input.readonly = false;
   });
 };
 
