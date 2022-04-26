@@ -1,7 +1,6 @@
 root: true
 
 plugins:
-  - jest
   - babel
 
 env:
@@ -12,8 +11,7 @@ env:
 
 extends:
   - 'airbnb-base'
-  - 'plugin:jest/recommended'
-
+  
 parserOptions:
   ecmaVersion: 11
   sourceType: module
