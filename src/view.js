@@ -53,20 +53,20 @@ const getFeeds = (state, i18n, link) => makeRequest(i18n, link)
       }
       state.feedback.success = i18n.t('success');
     }
-    state.input.readonly = false;
+    state.processState = 'success';
   });
 
 const runValidation = (state, i18n, link) => {
   state.feedback.success = null;
   state.feedback.error = null;
-  state.input.readonly = true;
+  state.processState = 'loading';
   validate(link, state.links, i18n)
     .then(() => getFeeds(state, i18n, link))
     .then(() => getNewPost(state, i18n))
     .catch((err) => {
       state.feedback.error = err.message;
       state.feedback.success = null;
-      state.input.readonly = false;
+      state.processState = null;
     });
 };
 

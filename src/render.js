@@ -151,7 +151,7 @@ const renderFeeds = (elements, feeds) => {
 };
 
 const blockInput = (elements, value) => {
-  if (value === true) {
+  if (value === 'loading') {
     elements.input.setAttribute('readonly', value);
     elements.submitButton.setAttribute('disabled', '');
   } else {
@@ -173,7 +173,7 @@ const render = (elements) => (path, value) => {
   if (path === 'newPosts') {
     renderPosts(elements, value.reverse());
   }
-  if (path === 'input.readonly') {
+  if (path === 'processState') {
     blockInput(elements, value);
   }
 };
