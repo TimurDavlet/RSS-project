@@ -5,14 +5,23 @@ import axios from 'axios';
 import validate from './validation.js';
 import parser from './parser.js';
 
-const makeRequest = (state, i18n, link) => axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`)
+const routes = {
+  allOrigins: (url) => {
+    const result = new URL('/get', 'https://allorigins.hexlet.app');
+    result.searchParams.set('url', url);
+    result.searchParams.set('disableCache', 'true');
+    return result.toString();
+  },
+};
+
+const makeRequest = (i18n, link) => axios.get(routes.allOrigins(link))
   // eslint-disable-next-line no-unused-vars
   .then((response) => response.data).catch((e) => {
     throw new Error(i18n.t('errors.network'));
   });
 
 const getNewPost = (state, i18n) => {
-  state.links.forEach((link) => makeRequest(state, i18n, link)
+  state.links.forEach((link) => makeRequest(i18n, link)
     .then((data) => {
       const newFeed = parser(data.contents, state.feedback, i18n);
       if (newFeed !== null) {
@@ -26,7 +35,7 @@ const getNewPost = (state, i18n) => {
   setTimeout(() => getNewPost(state, i18n), 5000);
 };
 
-const getFeeds = (state, i18n, link) => makeRequest(state, i18n, link)
+const getFeeds = (state, i18n, link) => makeRequest(i18n, link)
   .then((data) => {
     const response = data;
     return response;
