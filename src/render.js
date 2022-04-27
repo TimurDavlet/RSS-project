@@ -161,20 +161,29 @@ const blockInput = (elements, value) => {
 };
 
 const render = (elements) => (path, value) => {
-  if (path === 'feedback.error') {
-    renderError(elements, value);
-  }
-  if (path === 'feedback.success') {
-    renderSuccess(elements, value);
-  }
-  if (path === 'newFeed') {
-    renderFeeds(elements, value);
-  }
-  if (path === 'newPosts') {
-    renderPosts(elements, value.reverse());
-  }
-  if (path === 'processState') {
-    blockInput(elements, value);
+  switch (path) {
+    case 'feedback.error':
+      renderError(elements, value);
+      break;
+
+    case 'feedback.success':
+      renderSuccess(elements, value);
+      break;
+
+    case 'newFeed':
+      renderFeeds(elements, value);
+      break;
+
+    case 'newPosts':
+      renderPosts(elements, value.reverse());
+      break;
+
+    case 'processState':
+      blockInput(elements, value);
+      break;
+
+    default:
+      break;
   }
 };
 
