@@ -16,9 +16,7 @@ export default () => {
   const state = onChange({
     lng: 'ru',
     links: [],
-    input: {
-      readonly: false,
-    },
+    processState: null,
     feedback: {
       error: null,
       success: null,

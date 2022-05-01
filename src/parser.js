@@ -11,8 +11,7 @@ export default (data, feedback, i18n) => {
   const domParser = new DOMParser();
   const xmlDocument = domParser.parseFromString(data, 'application/xml');
   if (xmlDocument.querySelector('parsererror')) {
-    feedback.error = i18n.t('errors.invalidRSS');
-    return null;
+    throw new Error(i18n.t('errors.invalidRSS'));
   }
   return {
     feedTitle: xmlDocument.querySelector('title')?.textContent,
