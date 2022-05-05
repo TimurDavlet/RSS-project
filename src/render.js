@@ -134,6 +134,7 @@ const renderFeeds = (elements, feeds) => {
   createTitle(fieldFeed, 'Фиды');
   createTitle(elements.posts, 'Посты');
   const ul = fieldFeed.querySelector('.list-group');
+  ul.innerHTML = '';
   feeds.forEach((feed) => {
     const { feedDescription, feedTitle } = feed;
     const li = document.createElement('li');
@@ -170,7 +171,7 @@ const render = (elements) => (path, value) => {
       renderSuccess(elements, value);
       break;
 
-    case 'newFeed':
+    case 'feeds':
       renderFeeds(elements, value);
       break;
 

@@ -22,7 +22,6 @@ export default () => {
       success: null,
     },
     valid: true,
-    newFeed: [],
     newPosts: [],
     feeds: [],
     posts: [],
