@@ -21,16 +21,17 @@ const makeRequest = (i18n, link) => axios.get(routes.allOrigins(link))
   });
 
 const getNewPost = (state, i18n) => {
-  const promises = state.links.map((link) => makeRequest(i18n, link)
-    .then((data) => {
-      const newFeed = parser(data.contents, state.feedback, i18n);
+  const promises = state.links.map((link) => makeRequest(i18n, link));
+  Promise.all(promises).then((data) => {
+    data.forEach((element) => {
+      const newFeed = parser(element.contents, state.feedback, i18n);
       const newPosts = _.differenceBy(newFeed.feedItems, state.posts, 'postLink');
       if (newPosts.length > 0) {
         state.newPosts = [...newPosts];
         state.posts = [...newPosts, ...state.posts];
       }
-    }));
-  Promise.all(promises).finally(setTimeout(() => getNewPost(state, i18n), 5000));
+    });
+  }).finally(setTimeout(() => getNewPost(state, i18n), 5000));
 };
 
 const getFeeds = (state, i18n, link) => makeRequest(i18n, link)
