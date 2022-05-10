@@ -21,17 +21,16 @@ const makeRequest = (i18n, link) => axios.get(routes.allOrigins(link))
   });
 
 const getNewPost = (state, i18n) => {
-  const promises = state.links.map((link) => makeRequest(i18n, link));
-  Promise.all(promises).then((data) => {
-    data.forEach((element) => {
-      const newFeed = parser(element.contents, state.feedback, i18n);
+  const promises = state.links.map((link) => makeRequest(i18n, link)
+    .then((data) => {
+      const newFeed = parser(data.contents, state.feedback, i18n);
       const newPosts = _.differenceBy(newFeed.feedItems, state.posts, 'postLink');
       if (newPosts.length > 0) {
         state.newPosts = [...newPosts];
         state.posts = [...newPosts, ...state.posts];
       }
-    });
-  }).finally(setTimeout(() => getNewPost(state, i18n), 5000));
+    }));
+  Promise.all(promises).finally(setTimeout(() => getNewPost(state, i18n), 5000));
 };
 
 const getFeeds = (state, i18n, link) => makeRequest(i18n, link)
@@ -45,21 +44,6 @@ const getFeeds = (state, i18n, link) => makeRequest(i18n, link)
     state.feedback.success = i18n.t('success');
     state.processState = 'success';
   });
-
-/*
-.then((data) => {
-  const feed = parser(data.contents, state.feedback, i18n);
-  const post = feed.feedItems;
-  state.feeds = [...feed, ...state.feeds];
-  state.links.push(link);
-  state.posts = [...state.posts, ...post];
-
-  const newPosts = _.differenceBy(newFeed.feedItems, state.posts, 'postLink');
-  if (newPosts.length > 0) {
-    state.newPosts = [...newPosts];
-    state.posts = [...state.newPosts, ...state.posts];
-  }
-*/
 
 const runValidation = (state, i18n, link) => {
   state.feedback.success = null;
