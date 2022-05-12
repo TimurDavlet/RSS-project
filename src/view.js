@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 /* eslint-disable no-param-reassign */
 import _ from 'lodash';
@@ -15,7 +16,6 @@ const routes = {
 };
 
 const makeRequest = (i18n, link) => axios.get(routes.allOrigins(link))
-  // eslint-disable-next-line no-unused-vars
   .then((response) => response.data).catch((e) => {
     throw new Error(i18n.t('errors.network'));
   });
