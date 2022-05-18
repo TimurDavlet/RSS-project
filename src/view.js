@@ -17,7 +17,7 @@ const routes = {
 
 const makeRequest = (i18n, link) => axios.get(routes.allOrigins(link))
   .then((response) => response.data).catch((e) => {
-    throw new Error(i18n.t('errors.network'));
+    throw new Error(i18n.t('errors.netError'));
   });
 
 const getNewPost = (state, i18n) => {
