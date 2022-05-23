@@ -13,21 +13,22 @@ export default () => {
     posts: document.querySelector('.posts'),
     submitButton: document.querySelector('button[type="submit"]'),
   };
+
+  const i18nextInstance = i18next.createInstance();
+
   const state = onChange({
     lng: 'ru',
     links: [],
     processState: null,
     feedback: {
       error: null,
-      success: null,
     },
     valid: true,
     newPosts: [],
     feeds: [],
     posts: [],
-  }, render(elements));
+  }, render(elements, i18nextInstance));
 
-  const i18nextInstance = i18next.createInstance();
   i18nextInstance.init({
     lng: state.lng,
     resources,

@@ -15,42 +15,41 @@ const routes = {
   },
 };
 
-const makeRequest = (i18n, link) => axios.get(routes.allOrigins(link))
+const makeRequest = (link) => axios.get(routes.allOrigins(link))
   .then((response) => response.data).catch((e) => {
-    throw new Error(i18n.t('errors.netError'));
+    throw new Error('netError');
   });
 
-const getNewPost = (state, i18n) => {
-  const promises = state.links.map((link) => makeRequest(i18n, link)
+const getNewPost = (state) => {
+  const promises = state.links.map((link) => makeRequest(link)
     .then((data) => {
-      const newFeed = parser(data.contents, state.feedback, i18n);
+      const newFeed = parser(data.contents);
       const newPosts = _.differenceBy(newFeed.feedItems, state.posts, 'postLink');
       if (newPosts.length > 0) {
         state.newPosts = [...newPosts];
         state.posts = [...newPosts, ...state.posts];
       }
     }));
-  Promise.all(promises).finally(setTimeout(() => getNewPost(state, i18n), 5000));
+  Promise.all(promises).finally(setTimeout(() => getNewPost(state), 5000));
 };
 
-const getFeeds = (state, i18n, link) => makeRequest(i18n, link)
+const getFeeds = (state, link) => makeRequest(link)
   .then((data) => {
-    const feed = parser(data.contents, state.feedback, i18n);
+    const feed = parser(data.contents);
     const post = feed.feedItems;
     state.feeds = [...state.feeds, feed];
     state.links.push(link);
     state.posts = [...state.posts, ...post];
     state.newPosts = post;
-    state.feedback.success = i18n.t('success');
     state.processState = 'success';
   });
 
-const runValidation = (state, i18n, link) => {
+const runValidation = (state, link) => {
   state.feedback.success = null;
   state.feedback.error = null;
   state.processState = 'loading';
-  validate(link, state.links, i18n)
-    .then(() => getFeeds(state, i18n, link))
+  validate(link, state.links)
+    .then(() => getFeeds(state, link))
     .catch((err) => {
       state.feedback.error = err.message;
       state.feedback.success = null;
@@ -58,11 +57,11 @@ const runValidation = (state, i18n, link) => {
     });
 };
 
-const view = (elements, state, i18n) => {
+const view = (elements, state) => {
   elements.form.addEventListener('submit', (e) => {
     e.preventDefault();
-    runValidation(state, i18n, elements.input.value);
-    getNewPost(state, i18n);
+    runValidation(state, elements.input.value);
+    getNewPost(state);
   });
 };
 

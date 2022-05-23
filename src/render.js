@@ -5,13 +5,19 @@ const clear = (elements) => {
   elements.feedback.classList.remove('text-danger');
   elements.feedback.classList.remove('text-success');
 };
-
-const renderError = (elements, value) => {
+/*
+link
+uniq
+netError
+parse
+*/
+const renderError = (elements, value, i18n) => {
   if (value === null) {
     return;
   }
+  const error = i18n.t(`errors.${value}`);
   clear(elements);
-  elements.feedback.textContent = value;
+  elements.feedback.textContent = error;
   elements.input.classList.add('is-invalid');
   elements.feedback.classList.add('text-danger');
 };
@@ -161,14 +167,18 @@ const blockInput = (elements, value) => {
   }
 };
 
-const render = (elements) => (path, value) => {
+const renderProcess = (elements, value, i18n) => {
+  if (value === 'success') {
+    const success = i18n.t('success');
+    renderSuccess(elements, success);
+  }
+  blockInput(elements, value);
+};
+
+const render = (elements, i18n) => (path, value) => {
   switch (path) {
     case 'feedback.error':
-      renderError(elements, value);
-      break;
-
-    case 'feedback.success':
-      renderSuccess(elements, value);
+      renderError(elements, value, i18n);
       break;
 
     case 'feeds':
@@ -180,7 +190,7 @@ const render = (elements) => (path, value) => {
       break;
 
     case 'processState':
-      blockInput(elements, value);
+      renderProcess(elements, value, i18n);
       break;
 
     default:
