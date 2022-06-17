@@ -8,11 +8,12 @@ const getItem = (element) => ({
   postId: element.querySelector('guid')?.textContent,
 });
 
-export default (data) => {
+export default (data, state) => {
   const domParser = new DOMParser();
   const xmlDocument = domParser.parseFromString(data, 'application/xml');
   if (xmlDocument.querySelector('parsererror')) {
-    throw new Error('parse');
+    state.feedback.error = 'parseError';
+    throw new Error('parseError');
   }
   return {
     feedTitle: xmlDocument.querySelector('title')?.textContent,

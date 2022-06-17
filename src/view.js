@@ -15,15 +15,16 @@ const routes = {
   },
 };
 
-const makeRequest = (link) => axios.get(routes.allOrigins(link))
+const makeRequest = (link, state) => axios.get(routes.allOrigins(link))
   .then((response) => response.data).catch((e) => {
-    throw new Error('netError');
+    state.feedback.error = 'netError';
+    throw new Error(e);
   });
 
-const getNewPost = (state) => {
-  const promises = state.links.map((link) => makeRequest(link)
+export const getNewPost = (state) => {
+  const promises = state.links.map((link) => makeRequest(link, state)
     .then((data) => {
-      const newFeed = parser(data.contents);
+      const newFeed = parser(data.contents, state);
       const newPosts = _.differenceBy(newFeed.feedItems, state.posts, 'postLink');
       if (newPosts.length > 0) {
         state.newPosts = [...newPosts];
@@ -33,9 +34,9 @@ const getNewPost = (state) => {
   Promise.all(promises).finally(setTimeout(() => getNewPost(state), 5000));
 };
 
-const getFeeds = (state, link) => makeRequest(link)
+const getFeeds = (state, link) => makeRequest(link, state)
   .then((data) => {
-    const feed = parser(data.contents);
+    const feed = parser(data.contents, state);
     const post = feed.feedItems;
     state.feeds = [...state.feeds, feed];
     state.links.push(link);
@@ -48,21 +49,18 @@ const runValidation = (state, link) => {
   state.feedback.success = null;
   state.feedback.error = null;
   state.processState = 'loading';
-  validate(link, state.links)
+  validate(link, state.links, state)
     .then(() => getFeeds(state, link))
     .catch((err) => {
-      state.feedback.error = err.message;
+      state.feedback.error = null;
       state.feedback.success = null;
       state.processState = null;
     });
 };
 
-const view = (elements, state) => {
+export const view = (elements, state) => {
   elements.form.addEventListener('submit', (e) => {
     e.preventDefault();
     runValidation(state, elements.input.value);
-    getNewPost(state);
   });
 };
-
-export default view;

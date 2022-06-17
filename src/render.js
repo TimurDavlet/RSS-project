@@ -5,12 +5,7 @@ const clear = (elements) => {
   elements.feedback.classList.remove('text-danger');
   elements.feedback.classList.remove('text-success');
 };
-/*
-link
-uniq
-netError
-parse
-*/
+
 const renderError = (elements, value, i18n) => {
   if (value === null) {
     return;

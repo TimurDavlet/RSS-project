@@ -5,10 +5,10 @@ export default {
       ru: 'Русский',
     },
     errors: {
-      link: 'Ссылка должна быть валидным URL',
-      uniq: 'RSS уже существует',
+      linkError: 'Ссылка должна быть валидным URL',
+      uniqError: 'RSS уже существует',
       netError: 'Ошибка сети',
-      parse: 'Ресурс не содержит валидный RSS',
+      parseError: 'Ресурс не содержит валидный RSS',
     },
     success: 'RSS успешно загружен',
   },

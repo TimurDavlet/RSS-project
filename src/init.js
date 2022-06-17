@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 import onChange from 'on-change';
-import view from './view.js';
+import { view, getNewPost } from './view.js';
 import resources from './locales/index.js';
 import render from './render.js';
 
@@ -32,5 +32,6 @@ export default () => {
   i18nextInstance.init({
     lng: state.lng,
     resources,
-  }).then(view(elements, state, i18nextInstance));
+  }).then(view(elements, state, i18nextInstance))
+    .then(getNewPost(state));
 };
