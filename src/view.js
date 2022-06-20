@@ -46,8 +46,6 @@ const getFeeds = (state, link) => makeRequest(link, state)
   });
 
 const runValidation = (state, link) => {
-  state.feedback.success = null;
-  state.feedback.error = null;
   state.processState = 'loading';
   validate(link, state.links, state)
     .then(() => getFeeds(state, link))
