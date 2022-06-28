@@ -8,12 +8,15 @@ const getItem = (element) => ({
   postId: element.querySelector('guid')?.textContent,
 });
 
-export default (data, state) => {
+export default (data) => {
   const domParser = new DOMParser();
   const xmlDocument = domParser.parseFromString(data, 'application/xml');
   if (xmlDocument.querySelector('parsererror')) {
-    state.feedback.error = 'parseError';
-    throw new Error('parseError');
+    const error = new Error();
+    error.name = 'parseError';
+    error.message = 'Does not contain valid RSS';
+    error.isParsingError = true;
+    throw error;
   }
   return {
     feedTitle: xmlDocument.querySelector('title')?.textContent,

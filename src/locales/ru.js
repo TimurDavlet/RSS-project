@@ -11,5 +11,9 @@ export default {
       parseError: 'Ресурс не содержит валидный RSS',
     },
     success: 'RSS успешно загружен',
+    titles: {
+      feedName: 'Фиды',
+      postName: 'Посты',
+    },
   },
 };
