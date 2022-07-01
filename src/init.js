@@ -44,16 +44,12 @@ const getNewPost = (state) => {
   Promise.all(promises).finally(setTimeout(() => getNewPost(state), 5000));
 };
 
-const runValidation = (state, link) => {
-  state.processState = 'loading';
-  return validate(link, state.links);
-};
-
 const view = (elements, state) => {
   elements.form.addEventListener('submit', (e) => {
     e.preventDefault();
     const link = elements.input.value;
-    runValidation(state, link)
+    state.processState = 'loading';
+    validate(link, state.links)
       .then(() => axios.get(routes.allOrigins(link)))
       .then((response) => response.data)
       .then((data) => {
